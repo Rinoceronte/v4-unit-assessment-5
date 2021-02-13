@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import {connect} from 'react-redux';
+import {updateUser} from './state/actions';
 import logo from './../../assets/helo_logo.png';
 import './Auth.css';
 
@@ -9,6 +11,7 @@ class Auth extends Component {
     this.state = {
       username: '',
       password: '',
+      profile_pic: 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg',
       errorMsg: ''
     }
     this.login = this.login.bind(this);
@@ -23,8 +26,9 @@ class Auth extends Component {
 
   login() {
     axios.post('/api/auth/login', this.state)
-      .then(res => {
-        //code here
+    .then(res => {
+      this.props.updateUser(res.data);
+      this.props.history.push("/dash");
       })
       .catch(err => {
         console.log(err)
@@ -34,8 +38,9 @@ class Auth extends Component {
 
   register() {
     axios.post('/api/auth/register', this.state)
-      .then(res => {
-        //code here
+    .then(res => {
+      this.props.updateUser(res.data);
+      this.props.history.push("/dash");
       })
       .catch(err => {
         console.log(err)
@@ -76,4 +81,4 @@ class Auth extends Component {
   }
 }
 
-export default Auth;
+export default connect(null, {updateUser})(Auth);

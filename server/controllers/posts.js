@@ -3,6 +3,7 @@ module.exports = {
       let { id } = req.session.user;
       let { mine, search, oldest } = req.query;
       const db = await req.app.get('db')
+      // db.post.read_all_posts().then(posts => res.status(200).send(posts));
       if (mine && !search) {
         if (oldest) {
           db.post.read_all_oldest_first()
@@ -30,7 +31,7 @@ module.exports = {
       } else {
         if (oldest) {
           db.post.read_other_oldest_first([id])
-            .then(posts => res.status(200).send(posts))
+          .then(posts => res.status(200).send(posts))
         } else {
           db.post.read_other_users_posts([id])
             .then(posts => res.status(200).send(posts))
@@ -38,11 +39,23 @@ module.exports = {
       }
     },
     createPost: (req, res) => {
-      //code here
+      let {id} = req.session.user;
+      const {title, img, content} = req.body;
+      if(id){
+        req.app.get('db').post.create_post(id, title, img, content, new Date())
+          .then(post => post[0] ? res.status(200).send(post[0]) : res.sendStatus(201))
+          .catch(err => console.log(err));
+      }
+      else {
+        res.sendStatus(403);
+      }
     },
     readPost: (req, res) => {
+      console.log('id: '+ req.params.id);
       req.app.get('db').post.read_post(req.params.id)
-        .then(post => post[0] ? res.status(200).send(post[0]) : res.status(200).send({}))
+        .then(result => {
+          result[0] ? res.status(200).send(result[0]) : res.sendStatus(404);
+        }).catch(err => res.sendStatus(404));
     },
     deletePost: (req, res) => {
       req.app.get('db').post.delete_post(req.params.id)

@@ -43,3 +43,30 @@
     font-family: 'Open Sans','Courier New', Courier, monospace;
     font-size: 12px;
   }
+
+  @media screen and (max-width: 400px) {
+    .form .content-box {
+      width: 100vw;
+      height: 100vh;
+      padding: 0;
+    }
+
+    .form-main {
+      height: 80%;
+      justify-content: center;
+    }
+
+    .title {
+      font-size: 30px;
+    }
+
+    .form-img-prev {
+      height: 100%;
+    }
+
+    .dark-button {
+      display: block;
+      margin: 0 auto;
+    }
+
+  }

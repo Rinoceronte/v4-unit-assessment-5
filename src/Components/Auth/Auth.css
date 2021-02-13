@@ -26,7 +26,7 @@
   }
 
   .auth-title {
-    font-size: 80px;
+    font-size: 450%;
     font-weight: 700;
   }
 
@@ -70,4 +70,11 @@
     display: flex;
     justify-content: space-around;
     width: 55%;
+  }
+
+  @media screen and (max-width: 400px) {
+    .auth-container {
+      height: 100vh;
+      width: 100vw;
+    }
   }
