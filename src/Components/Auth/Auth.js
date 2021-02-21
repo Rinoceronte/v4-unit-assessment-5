@@ -11,7 +11,6 @@ class Auth extends Component {
     this.state = {
       username: '',
       password: '',
-      profile_pic: 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg',
       errorMsg: ''
     }
     this.login = this.login.bind(this);
@@ -37,7 +36,9 @@ class Auth extends Component {
   }
 
   register() {
-    axios.post('/api/auth/register', this.state)
+    const {username, password} = this.state;
+    const profile_pic = `https://robohash.org/${username}.png`;
+    axios.post('/api/auth/register', {username, password, profile_pic})
     .then(res => {
       this.props.updateUser(res.data);
       this.props.history.push("/dash");
